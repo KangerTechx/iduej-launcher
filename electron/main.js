@@ -21,6 +21,7 @@ function createLoaderWindow() {
     transparent: true,
     alwaysOnTop: true,
     resizable: false,
+    icon: path.join(__dirname, "resources/icon.ico"),
     webPreferences: {
       contextIsolation: true,
       preload: path.join(__dirname, "preload.js"),

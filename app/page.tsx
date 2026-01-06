@@ -44,7 +44,7 @@ export default function Home() {
         </div>
       </div>
       <div className="absolute top-0 left-0 -z-10 w-full h-full">
-        <img src="/images/home.png" alt="" className='w-full h-full object-cover' />
+        <img src="./images/home.png" alt="" className='w-full h-full object-cover' />
       </div>
     </div>
   );

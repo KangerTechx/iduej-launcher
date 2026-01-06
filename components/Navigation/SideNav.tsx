@@ -31,7 +31,7 @@ export default function SideNav() {
                 <ul>
                     {generalLinks.map((link) => ( 
                         <li key={link.id} className="flex flex-col items-center mt-2 text-neutral-300 hover:text-white">
-                            <Link href={`${link.path}`} className={cn(router.includes(link.slug) ? 'bg-primary/50!' :'', "flex justify-center items-center bg-transparent w-full p-1 h-[60px] hover:bg-primary/10 rounded-lg")}>
+                            <Link href={`${link.path}`} className={cn(router.includes(link.slug) ? 'bg-primary/50!' :'', "flex justify-center items-center bg-transparent w-full p-1 h-15 hover:bg-primary/10 rounded-lg")}>
                                 <Image src={`/images/${link.logo}`} width={50} height={50} alt="dofus"/>
                             </Link>
                         </li>

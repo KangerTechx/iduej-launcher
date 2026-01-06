@@ -8,11 +8,14 @@
     "dev": "concurrently \"npm run dev:next\" \"npm run dev:electron\"",
     "dev:next": "next dev --turbopack",
     "dev:electron": "wait-on http://localhost:3000 && cross-env NODE_ENV=development electron .",
-    "dist": "electron-builder --publish always",
+    "dist": "npm run dist:win && npm run dist:mac && npm run dist:linux",
     "build": "next build",
     "start": "next start",
     "start:electron": "cross-env NODE_ENV=production electron .",
     "lint": "eslint",
+    "dist:win": "electron-builder --win --x64 --publish always",
+    "dist:mac": "electron-builder --mac --x64 --publish always",
+    "dist:linux": "electron-builder --linux --x64 --publish always",
     "build:all": "npm run clean && npm run build && npm run dist"
   },
   "repository": {
@@ -34,10 +37,13 @@
       "target": "nsis"
     },
     "mac": {
-      "target": "dmg"
+      "target": ["dmg", "zip"],
+      "icon": "resources/icon.icns"
     },
     "linux": {
-      "target": "AppImage"
+      "target": ["AppImage", "deb"],
+      "icon": "resources/icon.ico",
+      "category": "Utility"
     },
     "publish": {
       "provider": "github",
