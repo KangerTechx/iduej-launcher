@@ -3,11 +3,18 @@
 import BlurCard from "@/components/Home/BlurCard";
 import Dev from "@/components/Home/Dev";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { RiDiscordFill } from "react-icons/ri";
 
 export default function Home() {
-const [color, setColor] = useState('');
+
+  useEffect(() => {
+      const savedColor = localStorage.getItem('primary-color');
+      if (savedColor) {
+        document.documentElement.dataset.color = savedColor
+      }
+    }, []);
+
 
   return (
     <div className="relative flex justify-between w-full h-full">
@@ -32,7 +39,7 @@ const [color, setColor] = useState('');
           <h2 className="fond-bold text-xl">Bienvenue</h2>
         </div>
         <div className="flex flex-col items-center w-97.5]">
-          <Dev color={color} />
+          <Dev/>
           <p className="font-semibold text-xs mt-4">Yapa - Pah - Badaa - Kanger</p>
         </div>
       </div>

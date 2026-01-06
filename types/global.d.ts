@@ -5,6 +5,7 @@ declare global {
   interface Window {
     electronAPI: {
       checkForUpdates: () => void;
-    };
+    },
+    ipc: IpcHandler
   }
 }
