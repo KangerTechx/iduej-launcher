@@ -13,13 +13,13 @@ export default function SideNav() {
         {
             id: 1,
             slug: "dofus",
-            path: "/dofus",
+            path: "./dofus",
             logo: "dofus/dofus.png"
         },
         {
             id: 2,
             slug: "wow",
-            path: "/wow",
+            path: "./wow",
             logo: "wow/wow.png"
         }
     ]
@@ -32,7 +32,7 @@ export default function SideNav() {
                     {generalLinks.map((link) => ( 
                         <li key={link.id} className="flex flex-col items-center mt-2 text-neutral-300 hover:text-white">
                             <Link href={`${link.path}`} className={cn(router.includes(link.slug) ? 'bg-primary/50!' :'', "flex justify-center items-center bg-transparent w-full p-1 h-15 hover:bg-primary/10 rounded-lg")}>
-                                <Image src={`/images/${link.logo}`} width={50} height={50} alt="dofus"/>
+                                <Image src={`./images/${link.logo}`} width={50} height={50} alt="dofus"/>
                             </Link>
                         </li>
                         

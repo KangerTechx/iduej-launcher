@@ -35,7 +35,7 @@ export default function Home() {
       </div>
       <div className="flex flex-col items-center justify-between w-1/3 h-full  p-5">
         <div className="w-full flex flex-col items-center">
-          <img src="/images/logo.png" className="w-37.5 h-auto " />
+          <img src="./images/logo.png" className="w-37.5 h-auto " />
           <h2 className="fond-bold text-xl">Bienvenue</h2>
         </div>
         <div className="flex flex-col items-center w-97.5]">

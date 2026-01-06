@@ -23,19 +23,19 @@ export default function RootLayout({
                     modules={[Autoplay]}
                 >
                     <SwiperSlide>
-                        <img src="/images/dofus/bg/bg.webp" alt="" className='w-full h-full' />
+                        <img src="./images/dofus/bg/bg.webp" alt="" className='w-full h-full' />
                     </SwiperSlide>
                     <SwiperSlide>
-                        <img src="/images/dofus/bg/bg2.png" alt="" className='w-full h-full' />
+                        <img src="./images/dofus/bg/bg2.png" alt="" className='w-full h-full' />
                     </SwiperSlide>
                     <SwiperSlide>
-                        <img src="/images/dofus/bg/bg1.webp" alt="" className='w-full h-full' />
+                        <img src="./images/dofus/bg/bg1.webp" alt="" className='w-full h-full' />
                     </SwiperSlide>
                     <SwiperSlide>
-                        <img src="/images/dofus/bg/bg3.webp" alt="" className='w-full h-full' />
+                        <img src="./images/dofus/bg/bg3.webp" alt="" className='w-full h-full' />
                     </SwiperSlide>
                     <SwiperSlide>
-                        <img src="/images/dofus/bg/bg4.jpg" alt="" className='w-full h-full' />
+                        <img src="./images/dofus/bg/bg4.jpg" alt="" className='w-full h-full' />
                     </SwiperSlide>
                 </Swiper>
             </div>

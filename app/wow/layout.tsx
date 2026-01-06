@@ -23,16 +23,16 @@ export default function RootLayout({
                     modules={[Autoplay]}
                 >
                     <SwiperSlide>
-                        <img src="/images/wow/bg/bg3.jpg" alt="" className='w-full h-full' />
+                        <img src="./images/wow/bg/bg3.jpg" alt="" className='w-full h-full' />
                     </SwiperSlide>
                     <SwiperSlide>
-                        <img src="/images/wow/bg/bg1.webp" alt="" className='w-full h-full' />
+                        <img src="./images/wow/bg/bg1.webp" alt="" className='w-full h-full' />
                     </SwiperSlide>
                     <SwiperSlide>
-                        <img src="/images/wow/bg/bg2.jpg" alt="" className='w-full h-full' />
+                        <img src="./images/wow/bg/bg2.jpg" alt="" className='w-full h-full' />
                     </SwiperSlide>
                     <SwiperSlide>
-                        <img src="/images/wow/bg/bg4.webp" alt="" className='w-full h-full' />
+                        <img src="./images/wow/bg/bg4.webp" alt="" className='w-full h-full' />
                     </SwiperSlide>
 
                 </Swiper>
