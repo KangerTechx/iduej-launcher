@@ -14,26 +14,37 @@
     "lint": "eslint",
     "build:all": "npm run build && npm run dist"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/KangerTechx/iduej-launcher.git"
+  },
   "build": {
-  "appId": "com.monapp.test",
-  "files": [
-    "electron/**/*",
-    "out/**/*",
-    "package.json"
-  ],
-  "directories": {
-    "buildResources": "electron/resources"
+    "appId": "com.kangertechx.iduejlauncher",
+    "files": [
+      "electron/**/*",
+      "out/**/*",
+      "package.json"
+    ],
+    "directories": {
+      "buildResources": "electron/resources"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "mac": { 
+      "target": "dmg" 
+    },
+    "linux": { 
+      "target": "AppImage" 
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "KangerTechx",
+        "repo" : "iduej-launcher" 
+      }
+    ]
   },
-  "win": {
-    "target": "nsis"
-  },
-  "mac": { 
-    "target": "dmg" 
-  },
-  "linux": { 
-    "target": "AppImage" 
-  }
-},
   "dependencies": {
     "next": "16.1.1",
     "react": "19.2.3",
