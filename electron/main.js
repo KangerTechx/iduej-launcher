@@ -54,24 +54,30 @@ function createMainWindow() {
   }
 }
 
-// --- Config autoUpdater ---
+// --- Setup autoUpdater ---
 function setupAutoUpdater() {
-  autoUpdater.checkForUpdates();
-
-  // Téléchargement en cours → envoyer la progression au loader
+  autoUpdater.on("checking-for-update", () => log.info("Vérification des updates..."));
+  autoUpdater.on("update-available", (info) => log.info(`Update disponible: ${info.version}`));
+  autoUpdater.on("update-not-available", () => {
+    log.info("Pas de nouvelle version.");
+    if (loaderWindow) {
+      loaderWindow.close();
+      createMainWindow();
+    }
+  });
   autoUpdater.on("download-progress", (progress) => {
     if (loaderWindow) {
       loaderWindow.webContents.send("download-progress", Math.round(progress.percent));
     }
-    log.info(`Download progress: ${progress.percent.toFixed(2)}%`);
   });
 
   // Update téléchargé
   autoUpdater.on("update-downloaded", (info) => {
-    // Si tu veux redémarrage automatique sans popup, décommente :
-    // autoUpdater.quitAndInstall();
+    // Install automatique
+     autoUpdater.quitAndInstall();
 
     // Avec popup pour l'utilisateur :
+    /*
     const choice = dialog.showMessageBoxSync(loaderWindow, {
       type: "question",
       buttons: ["Redémarrer maintenant", "Plus tard"],
@@ -84,6 +90,7 @@ function setupAutoUpdater() {
     if (choice === 0) {
       autoUpdater.quitAndInstall();
     }
+    */
   });
 
   autoUpdater.on("checking-for-update", () => log.info("Vérification des updates..."));
