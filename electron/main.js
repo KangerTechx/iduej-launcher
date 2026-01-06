@@ -1,4 +1,4 @@
-const { app, BrowserWindow, dialog } = require("electron");
+const { app, BrowserWindow, dialog, ipcMain } = require("electron");
 const path = require("path");
 const { autoUpdater } = require("electron-updater");
 
@@ -10,8 +10,31 @@ autoUpdater.logger.transports.file.level = "info";
 // --- Détection environnement ---
 const isDev = process.env.NODE_ENV === "development";
 
-function createWindow() {
-  const win = new BrowserWindow({
+let mainWindow;
+let loaderWindow;
+
+// --- Créer la fenêtre loader (splash screen) ---
+function createLoaderWindow() {
+  loaderWindow = new BrowserWindow({
+    width: 400,
+    height: 200,
+    frame: false,
+    transparent: true,
+    alwaysOnTop: true,
+    resizable: false,
+    webPreferences: {
+      contextIsolation: true,
+      preload: path.join(__dirname, "preload.js"), // optionnel si tu veux ipcRenderer
+    },
+  });
+
+  loaderWindow.loadFile(path.join(__dirname, "loader.html"));
+  loaderWindow.center();
+}
+
+// --- Créer la fenêtre principale (Next.js) ---
+function createMainWindow() {
+  mainWindow = new BrowserWindow({
     width: 1280,
     height: 720,
     minWidth: 1280,
@@ -25,17 +48,31 @@ function createWindow() {
   });
 
   if (isDev) {
-    win.loadURL("http://localhost:3000");
+    mainWindow.loadURL("http://localhost:3000");
   } else {
-    win.loadFile(path.join(__dirname, "../out/index.html"));
+    mainWindow.loadFile(path.join(__dirname, "../out/index.html"));
   }
+}
 
-  // --- Auto-update ---
+// --- Config autoUpdater ---
+function setupAutoUpdater() {
   autoUpdater.checkForUpdates();
 
-  // Quand une update est disponible et téléchargée
+  // Téléchargement en cours → envoyer la progression au loader
+  autoUpdater.on("download-progress", (progress) => {
+    if (loaderWindow) {
+      loaderWindow.webContents.send("download-progress", Math.round(progress.percent));
+    }
+    log.info(`Download progress: ${progress.percent.toFixed(2)}%`);
+  });
+
+  // Update téléchargé
   autoUpdater.on("update-downloaded", (info) => {
-    const choice = dialog.showMessageBoxSync(win, {
+    // Si tu veux redémarrage automatique sans popup, décommente :
+    // autoUpdater.quitAndInstall();
+
+    // Avec popup pour l'utilisateur :
+    const choice = dialog.showMessageBoxSync(loaderWindow, {
       type: "question",
       buttons: ["Redémarrer maintenant", "Plus tard"],
       defaultId: 0,
@@ -45,19 +82,28 @@ function createWindow() {
     });
 
     if (choice === 0) {
-      // Ferme l'app et installe la mise à jour
       autoUpdater.quitAndInstall();
     }
   });
 
-  // Optional: logs pour debug
   autoUpdater.on("checking-for-update", () => log.info("Vérification des updates..."));
   autoUpdater.on("update-available", (info) => log.info(`Update disponible: ${info.version}`));
-  autoUpdater.on("update-not-available", (info) => log.info("Pas de nouvelle version."));
+  autoUpdater.on("update-not-available", (info) => {
+    log.info("Pas de nouvelle version.");
+    // Pas de maj → fermer le loader et ouvrir la fenêtre principale
+    if (loaderWindow) {
+      loaderWindow.close();
+      createMainWindow();
+    }
+  });
   autoUpdater.on("error", (err) => log.error("Erreur auto-update:", err));
 }
 
-app.whenReady().then(createWindow);
+// --- App ready ---
+app.whenReady().then(() => {
+  createLoaderWindow();
+  setupAutoUpdater();
+});
 
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") app.quit();
