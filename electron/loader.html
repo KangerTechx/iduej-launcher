@@ -15,8 +15,7 @@
 </div>
 
 <script>
-const { ipcRenderer } = require("electron");
-ipcRenderer.on("download-progress", (event, percent) => {
+window.electronAPI.onDownloadProgress((percent) => {
   document.getElementById("bar").style.width = percent + "%";
 });
 </script>

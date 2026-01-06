@@ -1,4 +1,4 @@
-const { contextBridge } = require("electron");
+const { contextBridge, ipcRenderer } = require("electron");
 const { autoUpdater } = require("electron-updater");
 
 contextBridge.exposeInMainWorld("electronAPI", {
@@ -13,5 +13,8 @@ contextBridge.exposeInMainWorld("electronAPI", {
       console.log('Mise à jour téléchargée, redémarrage...');
       autoUpdater.quitAndInstall();
     });
-  }
+  },
+
+
+  onDownloadProgress: (callback) => ipcRenderer.on("download-progress", (event, percent) => callback(percent))
 });
