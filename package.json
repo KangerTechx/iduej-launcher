@@ -1,7 +1,7 @@
 {
   "name": "iduej-launcher",
   "description": "launcher",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "main": "electron/main.js",
   "scripts": {
     "clean": "rimraf dist out",
