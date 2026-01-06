@@ -1,38 +1,33 @@
-const { app, BrowserWindow, dialog, ipcMain } = require("electron");
+const { app, BrowserWindow } = require("electron");
 const path = require("path");
 const { autoUpdater } = require("electron-updater");
-
-// --- Logging pour auto-update ---
 const log = require("electron-log");
+
 autoUpdater.logger = log;
 autoUpdater.logger.transports.file.level = "info";
 
-// --- Détection environnement ---
 const isDev = process.env.NODE_ENV === "development";
 
 let mainWindow;
 let loaderWindow;
 
-// --- Créer la fenêtre loader (splash screen) ---
 function createLoaderWindow() {
   loaderWindow = new BrowserWindow({
     width: 400,
-    height: 200,
+    height: 300,
     frame: false,
     transparent: true,
     alwaysOnTop: true,
     resizable: false,
     webPreferences: {
       contextIsolation: true,
-      preload: path.join(__dirname, "preload.js"), // optionnel si tu veux ipcRenderer
+      preload: path.join(__dirname, "preload.js"),
     },
   });
-
   loaderWindow.loadFile(path.join(__dirname, "loader.html"));
   loaderWindow.center();
 }
 
-// --- Créer la fenêtre principale (Next.js) ---
 function createMainWindow() {
   mainWindow = new BrowserWindow({
     width: 1280,
@@ -54,59 +49,37 @@ function createMainWindow() {
   }
 }
 
-// --- Setup autoUpdater ---
 function setupAutoUpdater() {
+  const MIN_LOADER_TIME = 10000;
+  const loaderStart = Date.now();
+
   autoUpdater.on("checking-for-update", () => log.info("Vérification des updates..."));
-  autoUpdater.on("update-available", (info) => log.info(`Update disponible: ${info.version}`));
+  autoUpdater.on("update-available", () => {
+    log.info("Update disponible !");
+    if (loaderWindow) loaderWindow.webContents.send("update-available");
+  });
   autoUpdater.on("update-not-available", () => {
     log.info("Pas de nouvelle version.");
-    if (loaderWindow) {
-      loaderWindow.close();
-      createMainWindow();
-    }
+    // attendre 10s minimum
+    const remaining = Math.max(MIN_LOADER_TIME - (Date.now() - loaderStart), 0);
+    setTimeout(() => {
+      if (loaderWindow) {
+        loaderWindow.close();
+        createMainWindow();
+      }
+    }, remaining);
   });
   autoUpdater.on("download-progress", (progress) => {
-    if (loaderWindow) {
-      loaderWindow.webContents.send("download-progress", Math.round(progress.percent));
-    }
+    if (loaderWindow) loaderWindow.webContents.send("download-progress", Math.round(progress.percent));
   });
-
-  // Update téléchargé
-  autoUpdater.on("update-downloaded", (info) => {
-    // Install automatique
-     autoUpdater.quitAndInstall();
-
-    // Avec popup pour l'utilisateur :
-    /*
-    const choice = dialog.showMessageBoxSync(loaderWindow, {
-      type: "question",
-      buttons: ["Redémarrer maintenant", "Plus tard"],
-      defaultId: 0,
-      cancelId: 1,
-      title: "Mise à jour disponible",
-      message: `Une nouvelle version (${info.version}) a été téléchargée. Voulez-vous redémarrer pour l’installer ?`,
-    });
-
-    if (choice === 0) {
-      autoUpdater.quitAndInstall();
-    }
-    */
-  });
-
-  autoUpdater.on("checking-for-update", () => log.info("Vérification des updates..."));
-  autoUpdater.on("update-available", (info) => log.info(`Update disponible: ${info.version}`));
-  autoUpdater.on("update-not-available", (info) => {
-    log.info("Pas de nouvelle version.");
-    // Pas de maj → fermer le loader et ouvrir la fenêtre principale
-    if (loaderWindow) {
-      loaderWindow.close();
-      createMainWindow();
-    }
+  autoUpdater.on("update-downloaded", () => {
+    autoUpdater.quitAndInstall(); // fermeture et installation automatique
   });
   autoUpdater.on("error", (err) => log.error("Erreur auto-update:", err));
+
+  autoUpdater.checkForUpdates();
 }
 
-// --- App ready ---
 app.whenReady().then(() => {
   createLoaderWindow();
   setupAutoUpdater();

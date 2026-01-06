@@ -1,20 +1,13 @@
 const { contextBridge, ipcRenderer } = require("electron");
-const { autoUpdater } = require("electron-updater");
 
 contextBridge.exposeInMainWorld("electronAPI", {
-  checkForUpdates: () => {
-    autoUpdater.checkForUpdatesAndNotify();
+  // Recevoir l'event "update-available" depuis le main process
+  onUpdateAvailable: (callback) => ipcRenderer.on("update-available", callback),
 
-    autoUpdater.on('update-available', () => {
-      console.log('Nouvelle version disponible !');
-    });
+  // Recevoir la progression du téléchargement
+  onDownloadProgress: (callback) =>
+    ipcRenderer.on("download-progress", (event, percent) => callback(percent)),
 
-    autoUpdater.on('update-downloaded', () => {
-      console.log('Mise à jour téléchargée, redémarrage...');
-      autoUpdater.quitAndInstall();
-    });
-  },
-
-
-  onDownloadProgress: (callback) => ipcRenderer.on("download-progress", (event, percent) => callback(percent))
+  // Optionnel : notifier le renderer que le loader peut se fermer
+  onUpdateNotAvailable: (callback) => ipcRenderer.on("update-not-available", callback),
 });
