@@ -39,13 +39,11 @@
     "linux": {
       "target": "AppImage"
     },
-    "publish": [
-      {
-        "provider": "github",
-        "owner": "KangerTechx",
-        "repo": "iduej-launcher"
-      }
-    ]
+    "publish": {
+      "provider": "github",
+      "owner": "KangerTechx",
+      "repo": "iduej-launcher"
+    }
   },
   "dependencies": {
     "electron-updater": "^6.6.2",
