@@ -1,5 +1,6 @@
 const {app, BrowserWindow} = require("electron");
 const path = require("path");
+const { autoUpdater } = require("electron-updater");
 
 const isDev = process.env.NODE_ENV === "development";
 
@@ -22,6 +23,8 @@ function createWindow(){
     } else {
         win.loadFile(path.join(__dirname, "../out/index.html"));
     }
+
+    //autoUpdater.checkForUpdatesAndNotify();
 }
 
 app.whenReady().then(createWindow);
