@@ -2,6 +2,12 @@ const {app, BrowserWindow} = require("electron");
 const path = require("path");
 const { autoUpdater } = require("electron-updater");
 
+
+// Active le logging
+const log = require("electron-log");
+autoUpdater.logger = log;
+autoUpdater.logger.transports.file.level = "info";
+
 const isDev = process.env.NODE_ENV === "development";
 
 function createWindow(){
@@ -24,7 +30,7 @@ function createWindow(){
         win.loadFile(path.join(__dirname, "../out/index.html"));
     }
 
-    //autoUpdater.checkForUpdatesAndNotify();
+    autoUpdater.checkForUpdatesAndNotify();
 }
 
 app.whenReady().then(createWindow);
