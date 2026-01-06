@@ -1,9 +1,10 @@
 {
   "name": "iduej-launcher",
   "description": "launcher",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "electron/main.js",
   "scripts": {
+    "clean": "rimraf dist out",
     "dev": "concurrently \"npm run dev:next\" \"npm run dev:electron\"",
     "dev:next": "next dev --turbopack",
     "dev:electron": "wait-on http://localhost:3000 && cross-env NODE_ENV=development electron .",
@@ -12,7 +13,7 @@
     "start": "next start",
     "start:electron": "cross-env NODE_ENV=production electron .",
     "lint": "eslint",
-    "build:all": "npm run build && npm run dist"
+    "build:all": "npm run clean && npm run build && npm run dist"
   },
   "repository": {
     "type": "git",
@@ -20,6 +21,7 @@
   },
   "build": {
     "appId": "com.kangertechx.iduejlauncher",
+    "productName": "Iduej",
     "files": [
       "electron/**/*",
       "out/**/*",
@@ -31,17 +33,17 @@
     "win": {
       "target": "nsis"
     },
-    "mac": { 
-      "target": "dmg" 
+    "mac": {
+      "target": "dmg"
     },
-    "linux": { 
-      "target": "AppImage" 
+    "linux": {
+      "target": "AppImage"
     },
     "publish": [
       {
         "provider": "github",
         "owner": "KangerTechx",
-        "repo" : "iduej-launcher" 
+        "repo": "iduej-launcher"
       }
     ]
   },
@@ -61,6 +63,7 @@
     "electron-builder": "^26.0.12",
     "eslint": "^9",
     "eslint-config-next": "16.1.1",
+    "rimraf": "^6.1.2",
     "tailwindcss": "^4",
     "typescript": "^5",
     "wait-on": "^9.0.3"
