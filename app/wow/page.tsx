@@ -10,7 +10,7 @@ export default function Page() {
                 <BlurCard>
                     <div className="w-fit flex flex-col items-center">
                         <div className=" w-fit flex justify-center py-12">
-                            <img src="./images/wow/bg/mop-tag.png" alt="" className='w-[340px] h-full' />
+                            <img src="/images/wow/bg/mop-tag.png" alt="" className='w-85 h-full' />
                         </div>
                         <div className=" bg-neutral-800/20 px-6 py-3 w-full">
                             <h3 className="text-md font-semibold text-foreground mb-2 text-right">version 5.4.8</h3>

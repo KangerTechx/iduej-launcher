@@ -3,8 +3,8 @@
 import { RiAlibabaCloudLine, RiCheckboxMultipleBlankLine, RiCloseFill } from "@remixicon/react"
 import Link from "next/link"
 import Image from "next/image"
-import Settings from "./Tools/Settings"
-import { Button } from "../ui/button"
+import Settings from "@/components/Navigation/Tools/Settings"
+import { Button } from "@/components/ui/button"
 
 
 export default function GeneralSideNav() {
@@ -28,8 +28,8 @@ export default function GeneralSideNav() {
         
         <div id="drag-region" className="w-full flex justify-between items-center px-1 py-3 h-10 border-b border-primary">
             <div className="flex items-center">
-                <Link href={`./`}>
-                    <Image src={"./images/logo.png"} width={50} height={50} alt="logo"/>
+                <Link href={`/`}>
+                    <Image src={"/images/logo.png"} width={50} height={50} alt="logo"/>
                 </Link>
                 <h1 className="text-2xl font-extrabold mb-2"><span className="text-primary">I</span>due<span className="text-primary">j</span></h1>
             </div>
