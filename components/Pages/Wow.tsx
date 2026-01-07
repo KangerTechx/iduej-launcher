@@ -20,16 +20,16 @@ export default function Dofus() {
                     modules={[Autoplay]}
                 >
                     <SwiperSlide>
-                        <img src="/images/wow/bg/bg3.jpg" alt="" className='w-full h-full' />
+                        <img src="./images/wow/bg/bg3.jpg" alt="" className='w-full h-full' />
                     </SwiperSlide>
                     <SwiperSlide>
-                        <img src="/images/wow/bg/bg1.webp" alt="" className='w-full h-full' />
+                        <img src="./images/wow/bg/bg1.webp" alt="" className='w-full h-full' />
                     </SwiperSlide>
                     <SwiperSlide>
-                        <img src="/images/wow/bg/bg2.jpg" alt="" className='w-full h-full' />
+                        <img src="./images/wow/bg/bg2.jpg" alt="" className='w-full h-full' />
                     </SwiperSlide>
                     <SwiperSlide>
-                        <img src="/images/wow/bg/bg4.webp" alt="" className='w-full h-full' />
+                        <img src="./images/wow/bg/bg4.webp" alt="" className='w-full h-full' />
                     </SwiperSlide>
 
                 </Swiper>
@@ -39,7 +39,7 @@ export default function Dofus() {
                     <BlurCard>
                         <div className="w-fit flex flex-col items-center">
                             <div className=" w-fit flex justify-center py-12">
-                                <img src="/images/wow/bg/mop-tag.png" alt="" className='w-85 h-full' />
+                                <img src="./images/wow/bg/mop-tag.png" alt="" className='w-85 h-full' />
                             </div>
                             <div className=" bg-neutral-800/20 px-6 py-3 w-full">
                                 <h3 className="text-md font-semibold text-foreground mb-2 text-right">version 5.4.8</h3>

@@ -20,19 +20,19 @@ export default function Dofus() {
                     modules={[Autoplay]}
                 >
                     <SwiperSlide>
-                        <img src="./../images/dofus/bg/bg.webp" alt="" className='w-full h-full' />
+                        <img src="./images/dofus/bg/bg.webp" alt="" className='w-full h-full' />
                     </SwiperSlide>
                     <SwiperSlide>
-                        <img src="./../images/dofus/bg/bg2.png" alt="" className='w-full h-full' />
+                        <img src="./images/dofus/bg/bg2.png" alt="" className='w-full h-full' />
                     </SwiperSlide>
                     <SwiperSlide>
-                        <img src="./../images/dofus/bg/bg1.webp" alt="" className='w-full h-full' />
+                        <img src="./images/dofus/bg/bg1.webp" alt="" className='w-full h-full' />
                     </SwiperSlide>
                     <SwiperSlide>
-                        <img src="./../images/dofus/bg/bg3.webp" alt="" className='w-full h-full' />
+                        <img src="./images/dofus/bg/bg3.webp" alt="" className='w-full h-full' />
                     </SwiperSlide>
                     <SwiperSlide>
-                        <img src="./../images/dofus/bg/bg4.jpg" alt="" className='w-full h-full' />
+                        <img src="./images/dofus/bg/bg4.jpg" alt="" className='w-full h-full' />
                     </SwiperSlide>
                 </Swiper>
             </div>
@@ -41,7 +41,7 @@ export default function Dofus() {
                     <BlurCard>
                         <div className="w-fit flex flex-col items-center">
                             <div className=" w-fit flex justify-center p-10">
-                                <img src="./../images/dofus/bg/dofus-tag.png" alt="" className='w-full h-full' />
+                                <img src="./images/dofus/bg/dofus-tag.png" alt="" className='w-full h-full' />
                             </div>
                             <div className=" bg-neutral-800/20 px-6 py-3 w-full">
                                 <h3 className="text-md font-semibold text-foreground mb-2 text-right">version 2.x.x</h3>

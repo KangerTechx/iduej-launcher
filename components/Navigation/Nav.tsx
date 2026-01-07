@@ -30,7 +30,7 @@ export default function GeneralSideNav(props: Props) {
         <div id="drag-region" className="w-full flex justify-between items-center px-1 py-3 h-10 border-b border-primary">
             <div className="flex items-center">
                 <div onClick={() => props.setPage("home")}>
-                    <Image src={"/images/logo.png"} width={50} height={50} alt="logo" />
+                    <Image src={"./images/logo.png"} width={50} height={50} alt="logo" />
                 </div>
                 <h1 className="text-2xl font-extrabold mb-2"><span className="text-primary">I</span>due<span className="text-primary">j</span></h1>
             </div>

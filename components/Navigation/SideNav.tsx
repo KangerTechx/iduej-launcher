@@ -32,7 +32,7 @@ export default function SideNav(props: Props) {
                     {generalLinks.map((link) => (
                         <li key={link.id} className="flex flex-col items-center mt-2 text-neutral-300 hover:text-white">
                             <div onClick={() => props.setPage(link.name)} className={cn(link.name === props.page ? 'bg-primary/50!' : '', "flex justify-center items-center bg-transparent w-full p-1 h-15 hover:bg-primary/10 rounded-lg")}>
-                                <Image src={`/images/${link.logo}`} width={50} height={50} alt="dofus" />
+                                <Image src={`./images/${link.logo}`} width={50} height={50} alt="dofus" />
                             </div>
                         </li>
 
