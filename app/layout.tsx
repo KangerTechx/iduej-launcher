@@ -36,12 +36,12 @@ export default function RootLayout({
     <html
       lang="fr"
       suppressHydrationWarning
-      >
-        <head>
-          <link rel="icon" href="/favicon.ico" />
-          <link href="https://fonts.googleapis.com/css2?family=Matemasie:wght@400;700&display=swap" rel="stylesheet"></link>
-          <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"></link>
-        </head>
+    >
+      <head>
+        <link rel="icon" href="/favicon.ico" />
+        <link href="https://fonts.googleapis.com/css2?family=Matemasie:wght@400;700&display=swap" rel="stylesheet"></link>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"></link>
+      </head>
       <body
         className={cn(
           'max-h-screen font-sans antialiased overflow-hidden',
@@ -54,15 +54,7 @@ export default function RootLayout({
           disableTransitionOnChange>
           <div>
             <main className="mx-2 rounded-lg mt-2">
-                <section className="bg-transparent">
-                    <Nav />
-                    <div className="flex w-full">
-                        <SideNav/>
-                        <div className="rounded-lg w-full h-[calc(100vh-40px)] overflow-hidden">
-                            {children}
-                        </div>
-                    </div>
-                </section>
+              {children}
             </main>
           </div>
         </ThemeProvider>
