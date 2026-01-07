@@ -200,6 +200,9 @@
 
 
 
+img {
+  pointer-events: none;
+}
 
 h1 {
   font-family: 'Matemasie', sans-serif;
@@ -210,13 +213,10 @@ h1 span {
 
 #drag-region {
   -webkit-app-region: drag;  /* Permet à cette zone d'être utilisée pour déplacer la fenêtre */
-  cursor:grab;
+  cursor:grab !important;
 }
 
-#drag-region button {
-  -webkit-app-region: no-drag; /* Empêche l'effet drag sur les boutons */
-}
-
-#drag-region a {
-  -webkit-app-region: no-drag; /* Empêche l'effet drag sur les boutons */
+#drag-region .no-drag,button,a {
+  -webkit-app-region: no-drag !important; /* Empêche l'effet drag sur les boutons */
+  cursor: pointer !important;
 }
