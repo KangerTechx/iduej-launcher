@@ -64,7 +64,6 @@ export default function Wow() {
         ["expansion2.zip", "https://s3.eu-north-1.amazonaws.com/wow-5.4.8/expansion2.zip"]
     ];
     */
-    */
     const EXTRACT_STRUCTURE: Record<string, string> = {
         'wow-5.4.8.zip': '.',
         'Wow.zip': 'wow-5.4.8',
