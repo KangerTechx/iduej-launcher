@@ -22,42 +22,48 @@ export default function Wow() {
     const GITHUB_OWNER = 'KangerTechx';
     const GITHUB_REPO = 'wow-5.4.8';
     const GITHUB_RELEASE_TAG = 'client-mop-5.4.8';
-    /*
-        const GITHUB_FILES = [
-            'wow-5.4.8.zip',
-            'Wow.zip',
-            'Wow-64.zip',
-            '_Wow.zip',
-            '_Wow-64.zip',
-            'Interface.zip',
-            'Data-Cache.zip',
-            'Data-Interface.zip',
-            'enUS.zip',
-            'frFR.zip',
-            'Data-1.zip',
-            'Data-2.zip',
-            'Data-3.zip',
-            'expansion3.zip',
-            'Config.wtf'
-        ];
     
-        const GDRIVE_FILES: [string, string][] = [
-            ["expansion1.zip", "https://drive.google.com/uc?id=1YhqqJZkTN15J7RGll-6_N01EyZhmxjCX&export=download"],
-            ["expansion2.zip", "https://drive.google.com/uc?id=1izfVUEHkniBb276C9LhsMCLAHafgr5jQ&export=download"],
-            ["expansion4.zip", "https://drive.google.com/uc?id=1jaMgOaTFKx0xqdp04efa68kqDOl2rmfh&export=download"],
-            ["model.zip", "https://drive.google.com/uc?id=1M9s-UhdYS1AIwP3LD_QkBZiDHsErApb6&export=download"],
-            ["sound.zip", "https://drive.google.com/uc?id=1mNH9LYM79t_cq_pQLRs531MrXwbf0zcZ&export=download"],
-            ["texture.zip", "https://drive.google.com/uc?id=1Z19VWMxvpDSgPZp8ll7FHDvp7MiEsBoh&export=download"],
-            ["world.zip", "https://drive.google.com/uc?id=1hxBAkIU-sBSgGIxL5XuTKrA5Oi3f-VHq&export=download"]
-        ];
-        */
-
-    const GITHUB_FILES = ['wow-5.4.8.zip', 'Wow.zip'];
-
-    const GDRIVE_FILES: [string, string][] = [
-        ["expansion1.zip", "https://drive.google.com/uc?id=1YhqqJZkTN15J7RGll-6_N01EyZhmxjCX&export=download"],
-        ["expansion2.zip", "https://drive.google.com/uc?id=1izfVUEHkniBb276C9LhsMCLAHafgr5jQ&export=download"]
+    // fichiers github release à ajouter (fichier < 2Gb)
+    const GITHUB_FILES = [
+        'wow-5.4.8.zip',
+        'Wow.zip',
+        'Wow-64.zip',
+        '_Wow.zip',
+        '_Wow-64.zip',
+        'Interface.zip',
+        'Data-Cache.zip',
+        'Data-Interface.zip',
+        'enUS.zip',
+        'frFR.zip',
+        'Data-1.zip',
+        'Data-2.zip',
+        'Data-3.zip',
+        'expansion1.zip',
+        'expansion3.zip',
+        'expansion4.zip',
+        'model.zip',
+        'Config.wtf'
     ];
+
+    // fichiers S3 à ajouter (fichier > 2Gb)
+    const S3_FILES: [string, string][] = [
+        ["expansion2.zip", "https://s3.eu-north-1.amazonaws.com/wow-5.4.8/expansion2.zip"],
+        ["sound.zip", "https://s3.eu-north-1.amazonaws.com/wow-5.4.8/sound.zip"],
+        ["texture.zip", "https://s3.eu-north-1.amazonaws.com/wow-5.4.8/texture.zip"],
+        ["world.zip", "https://s3.eu-north-1.amazonaws.com/wow-5.4.8/world.zip"]
+    ];
+    
+
+    // Pour test sans devoir downlload toute la llistte
+    /*
+    const GITHUB_FILES = [
+        'wow-5.4.8.zip'
+    ];
+
+    const S3_FILES: [string, string][] = [
+        ["expansion2.zip", "https://s3.eu-north-1.amazonaws.com/wow-5.4.8/expansion2.zip"]
+    ];
+    */
 
     const EXTRACT_STRUCTURE: Record<string, string> = {
         'wow-5.4.8.zip': '.',
@@ -87,9 +93,9 @@ export default function Wow() {
     // Build download list: all github files (direct download URL pattern) then gdrive files
     const githubBase = `https://github.com/${GITHUB_OWNER}/${GITHUB_REPO}/releases/download/${GITHUB_RELEASE_TAG}`;
     const githubList = GITHUB_FILES.map((name) => ({ url: `${githubBase}/${name}`, name, targetRelative: EXTRACT_STRUCTURE[name] || '' }));
-    const gdriveList = GDRIVE_FILES.map(([name, url]) => ({ url, name, targetRelative: EXTRACT_STRUCTURE[name] || '' }));
+    const s3List = S3_FILES.map(([name, url]) => ({ url, name, targetRelative: EXTRACT_STRUCTURE[name] || '' }));
 
-    const filesToDownload = [...githubList, ...gdriveList];
+    const filesToDownload = [...githubList, ...s3List];
 
     useEffect(() => {
         // Load saved install path from main (persisted) for this game
@@ -113,11 +119,21 @@ export default function Wow() {
 
         // Listen to progress events from main (single overall progress bar)
         window.electronAPI.onInstallProgress((data) => {
-            setProgress({ phase: data.phase, percent: data.percent || 0, index: data.index, total: data.total, filename: data.filename });
+            // Log de debug pour chaque étape reçue
+            console.log('[INSTALL_PROGRESS]', data);
+            setProgress((prev) => ({
+                ...prev,
+                phase: data.phase,
+                percent: typeof data.percent === 'number' ? data.percent : prev.percent,
+                index: data.index,
+                total: data.total,
+                filename: data.filename || prev.filename
+            }));
             setStatus('downloading');
         });
 
         window.electronAPI.onInstallComplete((res) => {
+            console.log('[INSTALL_COMPLETE]', res);
             if (res.success) {
                 setStatus('installed');
                 if (res.dest) setDest(res.dest);
@@ -127,7 +143,7 @@ export default function Wow() {
             }
         });
 
-        // Initialize files array length for reference (not used to render multiple progress bars)
+        // Initialisation pour la barre de progression (affichage du fichier courant)
         setFiles(filesToDownload.map((f) => ({ filename: f.name || '', percent: 0 })));
     }, []);
 

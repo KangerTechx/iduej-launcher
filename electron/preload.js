@@ -13,8 +13,8 @@ contextBridge.exposeInMainWorld("electronAPI", {
   // Choisir un dossier de destination (ouvre un dialog natif)
   chooseDirectory: () => ipcRenderer.invoke('choose-destination'),
 
-  // Démarrer le processus d'installation : { dest, files: [{url, name, targetRelative}] }
-  startInstall: (payload) => ipcRenderer.send('start-install', payload),
+  // Démarrer le processus d'installation (Node.js, support GitHub/S3)
+  startInstall: (payload) => ipcRenderer.invoke('startInstall', payload),
 
   // Recevoir la progression d'installation pour chaque fichier
   onInstallProgress: (callback) => ipcRenderer.on('install-progress', (event, data) => callback(data)),

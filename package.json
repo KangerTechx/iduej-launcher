@@ -8,7 +8,7 @@
     "dev": "concurrently \"npm run dev:next\" \"npm run dev:electron\"",
     "dev:next": "next dev --turbopack",
     "dev:electron": "wait-on http://localhost:3000 && cross-env NODE_ENV=development electron .",
-    "dist": "electron-builder",
+    "dist": "electron-builder --publish always",
     "build": "next build",
     "start": "next start",
     "start:electron": "cross-env NODE_ENV=production electron .",
