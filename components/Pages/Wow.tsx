@@ -18,7 +18,7 @@ export default function Wow() {
     const [files, setFiles] = useState<any[]>([]);
     const [progress, setProgress] = useState<{ phase?: string; percent: number; index?: number; total?: number; filename?: string }>({ percent: 0 });
 
-    // Configuration fournie
+    // Configuration github
     const GITHUB_OWNER = 'KangerTechx';
     const GITHUB_REPO = 'wow-5.4.8';
     const GITHUB_RELEASE_TAG = 'client-mop-5.4.8';
