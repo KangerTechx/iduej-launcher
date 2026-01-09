@@ -45,8 +45,9 @@ export default function Dofus() {
                             </div>
                             <div className=" bg-neutral-800/20 px-6 py-3 w-full">
                                 <h3 className="text-md font-semibold text-foreground mb-2 text-right">version 2.x.x</h3>
-
+                                {/* 
                                 <Button variant="default" className="w-full font-bold text-white hover:scale-105 transition-all ease cursor-pointer">Télécharger</Button>
+                                */}
                             </div>
                         </div>
                     </BlurCard>
