@@ -39,8 +39,14 @@ function createMainWindow() {
     icon: path.join(__dirname, 'resources/icon.ico'),
     webPreferences: { preload: path.join(__dirname, 'preload.js'), contextIsolation: true, nodeIntegration: false },
   });
-  if (isDev) mainWindow.loadURL('http://localhost:3000');
-  else mainWindow.loadFile(path.join(__dirname, '../out/index.html'));
+  if (isDev) {
+    mainWindow.loadURL('http://localhost:3000');
+    mainWindow.webContents.once('did-finish-load', () => {
+      mainWindow.webContents.openDevTools({ mode: 'detach' });
+    });
+  } else {
+    mainWindow.loadFile(path.join(__dirname, '../out/index.html'));
+  }
 }
 
 // IPC: Minimiser la fenêtre
@@ -239,17 +245,7 @@ ipcMain.handle('startInstall', async (event, payload) => {
 });
 
 // LANCER LE JEU
-ipcMain.handle('startGame', async (event, exePath) => {
-  try {
-    const { spawn } = require('child_process');
-    const child = spawn(exePath, { detached: true, stdio: 'ignore' });
-    child.unref();
-    return true;
-  } catch (e) {
-    log.error('Failed to start game:', e);
-    return false;
-  }
-});
+ipcMain.on('start-game', (event, exePath) => { try { const { spawn } = require('child_process'); const child = spawn(exePath, { detached: true, stdio: 'ignore' }); child.unref(); } catch (e) { log.error('Failed to start game:', e); } });
 
 app.whenReady().then(() => { createLoaderWindow(); if (isDev) setTimeout(() => { if (loaderWindow) { loaderWindow.close(); createMainWindow(); } }, MIN_LOADER_TIME); else autoUpdater.checkForUpdatesAndNotify().catch((e) => log.error('autoUpdater check failed', e)); app.on('activate', () => { if (BrowserWindow.getAllWindows().length === 0) createMainWindow(); }); });
 

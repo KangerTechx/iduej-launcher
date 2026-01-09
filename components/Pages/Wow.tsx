@@ -161,14 +161,21 @@ export default function Wow() {
     };
 
     const handlePlay = () => {
-        if (!dest) return;
-        // Example exe path — adjust to actual exe relative location
+        if (!dest) {
+            console.warn('[handlePlay] Pas de chemin d\'installation (dest)');
+            return;
+        }
         const exe = pathJoin(dest, 'wow-5.4.8', 'Wow-64.exe');
+        console.log('[handlePlay] exePath envoyé à Electron:', exe);
         window.electronAPI.startGame(exe);
     };
 
     // helper to build path for renderer (string concat; main will receive full path)
     const pathJoin = (...parts: string[]) => parts.join('\\');
+    // Pour debug : log le dest à chaque render
+    useEffect(() => {
+        console.log('[Wow.tsx] dest:', dest);
+    }, [dest]);
 
     // Check if game files actually exist at the destination
     const checkGameInstalled = async (destPath: string): Promise<boolean> => {
