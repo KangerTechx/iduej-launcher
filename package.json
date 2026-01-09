@@ -3,6 +3,9 @@
   "description": "launcher",
   "version": "1.0.0",
   "main": "electron/main.js",
+  "author": {
+    "name": "KangerTechx"
+  },
   "scripts": {
     "clean": "rimraf dist out",
     "dev": "concurrently \"npm run dev:next\" \"npm run dev:electron\"",

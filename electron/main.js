@@ -164,11 +164,13 @@ ipcMain.handle('startInstall', async (event, payload) => {
             file.on('finish', () => {
               file.close(() => {
                 log.info(`[INSTALL] Téléchargement terminé pour ${filename}, taille: ${downloaded} octets`);
-                if (downloaded < 1024) {
-                  log.error(`[INSTALL] Fichier trop petit ou corrompu (${filename}), taille: ${downloaded} octets`);
-                  event.sender.send('install-progress', { phase: 'error', index: i + 1, filename, message: 'Fichier trop petit ou corrompu' });
+                // Seul un ZIP trop petit est considéré comme corrompu
+                const ext = path.extname(filename).toLowerCase();
+                if (ext === '.zip' && downloaded < 1024) {
+                  log.error(`[INSTALL] ZIP trop petit ou corrompu (${filename}), taille: ${downloaded} octets`);
+                  event.sender.send('install-progress', { phase: 'error', index: i + 1, filename, message: 'ZIP trop petit ou corrompu' });
                   fs.unlink(outPath, () => {});
-                  reject(new Error('Fichier trop petit ou corrompu'));
+                  reject(new Error('ZIP trop petit ou corrompu'));
                   return;
                 }
                 // Envoie 100% à la fin
