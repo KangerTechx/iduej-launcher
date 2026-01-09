@@ -22,7 +22,7 @@ export default function Wow() {
     const GITHUB_OWNER = 'KangerTechx';
     const GITHUB_REPO = 'wow-5.4.8';
     const GITHUB_RELEASE_TAG = 'client-mop-5.4.8';
-    /*
+    
         const GITHUB_FILES = [
             'wow-5.4.8.zip',
             'Wow.zip',
@@ -50,15 +50,15 @@ export default function Wow() {
             ["texture.zip", "https://drive.google.com/uc?id=1Z19VWMxvpDSgPZp8ll7FHDvp7MiEsBoh&export=download"],
             ["world.zip", "https://drive.google.com/uc?id=1hxBAkIU-sBSgGIxL5XuTKrA5Oi3f-VHq&export=download"]
         ];
-        */
-
+    
+    /*
     const GITHUB_FILES = ['wow-5.4.8.zip', 'Wow.zip'];
 
     const GDRIVE_FILES: [string, string][] = [
         ["expansion1.zip", "https://drive.google.com/uc?id=1YhqqJZkTN15J7RGll-6_N01EyZhmxjCX&export=download"],
         ["expansion2.zip", "https://drive.google.com/uc?id=1izfVUEHkniBb276C9LhsMCLAHafgr5jQ&export=download"]
     ];
-
+    */
     const EXTRACT_STRUCTURE: Record<string, string> = {
         'wow-5.4.8.zip': '.',
         'Wow.zip': 'wow-5.4.8',
