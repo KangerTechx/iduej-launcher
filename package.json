@@ -8,7 +8,7 @@
     "dev": "concurrently \"npm run dev:next\" \"npm run dev:electron\"",
     "dev:next": "next dev --turbopack",
     "dev:electron": "wait-on http://localhost:3000 && cross-env NODE_ENV=development electron .",
-    "dist": "electron-builder --publish always",
+    "dist": "electron-builder",
     "build": "next build",
     "start": "next start",
     "start:electron": "cross-env NODE_ENV=production electron .",
@@ -37,11 +37,17 @@
       "target": "nsis"
     },
     "mac": {
-      "target": ["dmg", "zip"],
+      "target": [
+        "dmg",
+        "zip"
+      ],
       "icon": "resources/icon.icns"
     },
     "linux": {
-      "target": ["AppImage", "deb"],
+      "target": [
+        "AppImage",
+        "deb"
+      ],
       "icon": "resources/icon.ico",
       "category": "Utility"
     },
@@ -54,12 +60,15 @@
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.15",
+    "@radix-ui/react-progress": "^1.1.8",
     "@radix-ui/react-slot": "^1.2.4",
     "@remixicon/react": "^4.8.0",
+    "adm-zip": "^0.5.9",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "electron-log": "^5.4.3",
     "electron-updater": "^6.6.2",
+    "extract-zip": "^2.0.1",
     "lucide-react": "^0.562.0",
     "next": "16.1.1",
     "next-themes": "^0.4.6",
@@ -67,7 +76,8 @@
     "react-dom": "19.2.3",
     "react-icons": "^5.5.0",
     "swiper": "^12.0.3",
-    "tailwind-merge": "^3.4.0"
+    "tailwind-merge": "^3.4.0",
+    "unzipper": "^0.12.3"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
