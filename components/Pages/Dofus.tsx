@@ -28,7 +28,8 @@ export default function Dofus() {
 
     const EXTRACT_STRUCTURE: Record<string, string> = {
         "dofus-2.51.4.zip": ".",
-        "gfx.zip": "dofus-2.51.4/content"
+        "gfx.zip": "dofus-2.51.4/content",
+        "config.xml": "dofus-2.51.4"
     };
 
     // Build download list: all github files (direct download URL pattern) then gdrive files
