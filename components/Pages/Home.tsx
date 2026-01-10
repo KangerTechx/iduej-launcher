@@ -14,7 +14,7 @@ export default function Home() {
                     </div>
                     <div className="px-6 py-3 w-full">
                       <h3 className="text-lg font-semibold text-foreground mb-2">Discord</h3>
-                      <a href="">
+                      <a href="https://discord.gg/dbxyvBS3" target="_blank" rel="noopener noreferrer">
                         <Button variant="default" className="w-full font-bold text-white hover:scale-105 transition-all ease cursor-pointer">Rejoindre</Button>
                       </a>
                     </div>

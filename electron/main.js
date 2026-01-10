@@ -87,6 +87,7 @@ ipcMain.handle('choose-destination', async () => {
 });
 ipcMain.handle('save-install-path', async (event, { gameId, path: p }) => { try { const cfg = readConfig(); if (!cfg.paths) cfg.paths = {}; cfg.paths[gameId] = p; return writeConfig(cfg); } catch (e) { log.error('save-install-path', e); return false; } });
 ipcMain.handle('get-install-path', async (event, gameId) => { try { const cfg = readConfig(); return (cfg.paths && cfg.paths[gameId]) ? cfg.paths[gameId] : null; } catch (e) { log.error('get-install-path', e); return null; } });
+
 ipcMain.handle('check-game-installed', async (event, dest, gameType) => {
   try {
     // Check for game-specific markers to confirm installation
