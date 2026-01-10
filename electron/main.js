@@ -126,11 +126,19 @@ ipcMain.handle('startInstall', async (event, payload) => {
 
     const totalFiles = files.length;
     // Téléchargement de chaque fichier
+    // Nettoyage des fichiers .part potentiellement laissés par une interruption précédente
+    const partFiles = fs.readdirSync(downloadsDir).filter(f => f.endsWith('.part'));
+    for (const pf of partFiles) {
+      try { fs.unlinkSync(path.join(downloadsDir, pf)); } catch (e) { log.warn('Impossible de supprimer un .part', pf, e); }
+    }
+
     for (let i = 0; i < totalFiles; i++) {
       const f = files[i];
       const filename = f.name || path.basename(f.url);
       const outPath = path.join(downloadsDir, filename);
+      const tempPath = outPath + '.part';
       log.info(`[INSTALL] Préparation du téléchargement: ${filename} depuis ${f.url}`);
+      // On ne considère comme "présent" que le fichier final, pas le .part
       if (fs.existsSync(outPath) && fs.statSync(outPath).size > 0) {
         log.info(`[INSTALL] Fichier déjà présent (${filename}), taille: ${fs.statSync(outPath).size} octets`);
         const overallDone = Math.round(((i + 1) / totalFiles) * 100);
@@ -168,7 +176,6 @@ ipcMain.handle('startInstall', async (event, payload) => {
               reject(new Error(`HTTP ${response.statusCode}`));
               return;
             }
-            const file = fs.createWriteStream(outPath);
             let downloaded = 0;
             const totalSize = parseInt(response.headers['content-length'] || '0', 10);
             response.on('data', (chunk) => {
@@ -178,6 +185,8 @@ ipcMain.handle('startInstall', async (event, payload) => {
                 event.sender.send('install-progress', { phase: 'download', index: i + 1, total: totalFiles, percent, filename });
               }
             });
+            // On télécharge dans le .part
+            const file = fs.createWriteStream(tempPath);
             response.pipe(file);
             file.on('finish', () => {
               file.close(() => {
@@ -187,8 +196,18 @@ ipcMain.handle('startInstall', async (event, payload) => {
                 if (ext === '.zip' && downloaded < 1024) {
                   log.error(`[INSTALL] ZIP trop petit ou corrompu (${filename}), taille: ${downloaded} octets`);
                   event.sender.send('install-progress', { phase: 'error', index: i + 1, filename, message: 'ZIP trop petit ou corrompu' });
-                  fs.unlink(outPath, () => {});
+                  fs.unlink(tempPath, () => {});
                   reject(new Error('ZIP trop petit ou corrompu'));
+                  return;
+                }
+                // Déplacement du .part vers le fichier final
+                try {
+                  fs.renameSync(tempPath, outPath);
+                } catch (e) {
+                  log.error(`[INSTALL] Erreur lors du renommage .part -> final pour ${filename}:`, e);
+                  event.sender.send('install-progress', { phase: 'error', index: i + 1, filename, message: 'Erreur renommage .part' });
+                  fs.unlink(tempPath, () => {});
+                  reject(e);
                   return;
                 }
                 // Envoie 100% à la fin
