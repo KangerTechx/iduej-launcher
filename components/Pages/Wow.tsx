@@ -9,8 +9,6 @@ import { Button } from '@/components/ui/button';
 import ProgressRow from '@/components/progress-row';
 import { useEffect, useState } from 'react';
 
-// ProgressRow component moved to components/ui/progress-row.tsx
-
 export default function Wow() {
 
     const [dest, setDest] = useState<string | null>(null);

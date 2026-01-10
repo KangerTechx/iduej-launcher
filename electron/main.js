@@ -90,9 +90,20 @@ ipcMain.handle('get-install-path', async (event, gameId) => { try { const cfg = 
 ipcMain.handle('check-game-installed', async (event, dest, gameType) => {
   try {
     // Check for game-specific markers to confirm installation
-    if (gameType === 'wow-5.4.8') {
-      // WoW: check if wow-5.4.8 subfolder exists
-      return fs.existsSync(path.join(dest, 'wow-5.4.8'));
+    switch (gameType) {
+      case 'wow-5.4.8':
+        // WoW: check if wow-5.4.8 subfolder exists
+        return fs.existsSync(path.join(dest, 'wow-5.4.8'));
+      case 'dofus-2.51.4':
+        // Dofus: check if dofus-2.51.4 subfolder exists
+        return fs.existsSync(path.join(dest, 'dofus-2.51.4'));
+      // Exemple pour d'autres jeux plus tard
+      // case 'wow-retail':
+      //   return fs.existsSync(path.join(dest, '_retail_'));
+
+      default:
+        // Par défaut : on vérifie juste si le dossier existe
+        return fs.existsSync(dest);
     }
     // Default: just check if dest folder exists
     return fs.existsSync(dest);

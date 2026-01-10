@@ -94,7 +94,7 @@ export default function Dofus() {
         setDest(chosen);
         // persist choice so user can relaunch later
         // persist choice locally and in main config per-game
-        localStorage.setItem('doffusInstallPath', chosen);
+        localStorage.setItem('dofusInstallPath', chosen);
         try { await window.electronAPI.saveInstallPath(GITHUB_REPO, chosen); } catch (e) { console.warn('saveInstallPath failed', e); }
 
         // start install
